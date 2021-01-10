@@ -9,6 +9,7 @@ const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
+//const writeFileAsync = util.promisify(fs.writeFile)
 
 
 // Write code to use inquirer to gather information about the development team members,
@@ -21,31 +22,34 @@ const team = [];
 const createManager = () => {
     inquirer.prompt([
         {
-            name: 'Name',
+            name: 'name',
             message: 'What is the name of this employee?',
             type:'input',
         },
         {
-            name: 'ID',
+            name: 'id',
             message: 'What is the ID of this employee?',
             type:'input',
 
         },  
         {
-            name: 'Email',
+            name: 'email',
             message: 'What is the Email of this employee?',
             type:'input',
 
         },  
         {
-            name: 'Office',
+            name: 'office',
             message: 'What is the office number of this employee?',
             type:'input',
 
         },
     ]).then(answers => {
-        team.push(answers)
-        console.log(team)
+        const newManager = new Manager(answers.name, answers.id, answers.email, answers.office)
+        team.push(newManager)
+        //console.log(newManager)
+
+        addEmployee();
     })
 }
 
@@ -54,60 +58,68 @@ const createManager = () => {
 const createEngineer =() => {
     inquirer.prompt([
         {
-            name: 'Name',
+            name: 'name',
             message: 'What is the name of this employee?',
             type:'input',
         },
         {
-            name: 'ID',
+            name: 'id',
             message: 'What is the ID of this employee?',
             type:'input'
         },  
         {
-            name: 'Email',
+            name: 'email',
             message: 'What is the Email of this employee?',
             type:'input'
         }, 
         {
-            name: 'Github',
+            name: 'github',
             message: 'What is the GitHub username of this employee?',
             type:'input',
         }
     ]).then((answers)=> {
-        team.push(answers)
-        console.log(team)
+        const newEngineer = new Engineer(answers.name, answers.id, answers.email, answers.github)
+        team.push(newEngineer)
+        //console.log(newEngineer)
+
+        addEmployee();
     })
 }
 
 const createIntern = () => {
     inquirer.prompt([
         {
-            name: 'Name',
+            name: 'name',
             message: 'What is the name of this employee?',
             type:'input',
         },
         {
-            name: 'ID',
+            name: 'id',
             message: 'What is the ID of this employee?',
             type:'input',
 
         },  
         {
-            name: 'Email',
+            name: 'email',
             message: 'What is the Email of this employee?',
             type:'input',
 
         },  
         {
-            name: 'School',
+            name: 'school',
             message: 'What school did this intern graduate from?',
             type:'input',
 
         },
     ]).then(answers => {
-        team.push(answers)
-        console.log(team)
+        const newIntern = new Intern(answers.name, answers.id, answers.email, answers.school)
+        team.push(newIntern)
+        //console.log(newIntern)
+
+        addEmployee()
+        
     })
+    
 }
 
 
@@ -122,7 +134,6 @@ const typeOfEmployee = () => {
                 {name:'Manager', value: 0},
                 {name: 'Software Engineer', value: 1},
                 {name:'Intern', value: 2},
-                {name: 'My team is complete', value: 3}
             ]
         },
     ]).then((answers) => {
@@ -135,16 +146,36 @@ const typeOfEmployee = () => {
             else if (answers.employee === 2) {
                 createIntern();
             }
-            else if (answers.employee === 3) {
-                console.log('Your team has been generated. A webpage containing your teams custom information has been created.')
-                //generate page
-            }
         }   
     ).catch((err) => console.error(err));
 }
 
 typeOfEmployee();
     
+
+function addEmployee() {
+    inquirer.prompt([
+        {
+            name: 'NewMember',
+            message: 'Would you like to add another teammate?',
+            type: 'confirm',
+        }
+    ]).then((answers)=> {
+        if (answers.NewMember) {
+            typeOfEmployee();
+        } else {
+            //console.log(team)
+
+            const renderTeam = render(team) 
+            fs.writeFileSync(outputPath, renderTeam)
+
+            console.log('A file containing your roster has been generated!');
+        }
+    }).catch((err) => console.error(err));
+
+}
+
+
 
 
 
