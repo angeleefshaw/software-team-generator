@@ -41,7 +41,7 @@ A CLI application built with Node.js that generates an employee roster based on 
   
   [TEAM GENERATOR](https:// "SOFTWARE TEAM")
 
-  ![software-team-gen]()
+  ![software-team-gen](software-team-gen.jpg)
 
 
   
