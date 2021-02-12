@@ -1,5 +1,5 @@
 # software-team-generator
-A CLI application built with Node.js that generates an employee roster based on user input. Add managers, engineers, and interns to your teams roster.
+A command-line application built with Node.js that generates an employee roster based on user input. Add managers, engineers, and interns to your teams roster.
   
   [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
   
